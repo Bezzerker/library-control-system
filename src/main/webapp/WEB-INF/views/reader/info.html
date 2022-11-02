@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Info</title>
+</head>
+<body>
+    <h1>Person info:</h1>
+    <table border="2">
+        <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Идентификатор БД</td>
+            <td th:text="${author.getId()}"></td>
+        </tr>
+        <tr>
+            <td>Имя</td>
+            <td th:text="${author.getFirstName()}"></td>
+        </tr>
+        <tr>
+            <td>Фамилия</td>
+            <td th:text="${author.getSurname()}"></td>
+        </tr>
+        <tr>
+            <td>Отчество</td>
+            <td th:text="${author.getPatronymic()}"></td>
+        </tr>
+    </table>
+
+    <form th:method="DELETE" th:action="@{/authors/{id}(id=${author.getId()})}">
+      <input type="submit" value="Delete">
+    </form>
+    <form th:method="GET" th:action="@{/authors/{id}/edit(id=${author.getId()})}">
+        <input type="submit" value="Edit">
+    </form>
+    <br>
+    <hr>
+    <a th:href="@{/authors}">Return to people list</a>
+</body>
+</html>

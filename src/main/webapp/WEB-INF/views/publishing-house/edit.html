@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение издательства</title>
+</head>
+<body>
+    <h1>Изменение данных об издательстве: </h1>
+    <form th:method="PATCH" th:action="@{/publishing-houses/{id}(id=${house.getId()})}" th:object="${house}">
+        <label for="publishing-house">Название издательства: </label>
+        <input type="text" th:field="*{name}" id="publishing-house">
+        <br>
+
+        <input type="submit" value="Изменить!">
+    </form>
+    <br>
+    <hr>
+    <a th:href="@{/publishing-houses}">Вернуться к списку издательств</a>
+    <a th:href="@{/books}">Перейти к списку книг</a>
+    <a th:href="@{/readers}">Перейти к читателям</a>
+    <a th:href="@{/authors}">Перейти к авторам</a>
+</body>
+</html>

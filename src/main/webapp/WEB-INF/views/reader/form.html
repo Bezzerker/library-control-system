@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new Student</title>
+</head>
+<body>
+    <h1>Create new Person from: </h1>
+    <form th:method="POST" th:action="@{/authors}" th:object="${author}">
+        <label for="firstName">Имя: </label>
+        <input id="firstName" type="text" th:field="*{firstName}">
+        <br>
+        <label for="surname">Фамилия: </label>
+        <input id="surname" type="text" th:field="*{surname}">
+        <br>
+        <label for="patronymic">Отчество: </label>
+        <input id="patronymic" type="text" th:field="*{patronymic}">
+        <br>
+        <input type="submit" value="Добавить автора!">
+    </form>
+    <br>
+    <hr>
+    <a th:href="@{/authors}">Return to people list</a>
+</body>
+</html>

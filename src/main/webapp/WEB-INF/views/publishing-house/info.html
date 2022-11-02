@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Получение информации об издательском доме</title>
+</head>
+<body>
+    <h1>Информация об издательском доме</h1>
+    <table border="2">
+        <tr>
+            <th>Параметр</th>
+            <th>Значение</th>
+        </tr>
+        <tr>
+            <td>Идентификатор в БД</td>
+            <td th:text="${house.getId()}"></td>
+        </tr>
+        <tr>
+            <td>Название издательства</td>
+            <td th:text="${house.getName()}"></td>
+        </tr>
+    </table>
+
+    <form th:method="DELETE" th:action="@{/publishing-houses/{id}(id=${house.getId()})}">
+      <input type="submit" value="Удалить">
+    </form>
+    <form th:method="GET" th:action="@{/publishing-houses/{id}/edit(id=${house.getId()})}">
+        <input type="submit" value="Изменить">
+    </form>
+    <br>
+    <hr>
+    <a th:href="@{/publishing-houses}">Вернуться к списку издательств</a>
+    <a th:href="@{/books}">Перейти к списку книг</a>
+    <a th:href="@{/readers}">Перейти к читателям</a>
+    <a th:href="@{/authors}">Перейти к авторам</a>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление издательства</title>
+</head>
+<body>
+    <h1>Добавление новго издательства: </h1>
+    <form th:method="POST" th:action="@{/publishing-houses}" th:object="${house}">
+        <label for="publishing-house">Название издательства: </label>
+        <input type="text" th:field="*{name}" id="publishing-house">
+        <br>
+        <input type="submit" value="Добавить издательский дом!">
+    </form>
+    <br>
+    <hr>
+    <a th:href="@{/publishing-houses}">Вернуться к списку издательств</a>
+    <a th:href="@{/books}">Перейти к списку книг</a>
+    <a th:href="@{/readers}">Перейти к читателям</a>
+    <a th:href="@{/authors}">Перейти к авторам</a>
+</body>
+</html>

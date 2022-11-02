@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали книги</title>
+</head>
+<body>
+    <h1>Информация о книге:</h1>
+    <table border="2">
+        <tr>
+            <th>Параметр</th>
+            <th>Значение</th>
+        </tr>
+        <tr>
+            <td>ISBN</td>
+            <td th:text="${book.getISBN()}"></td>
+        </tr>
+        <tr>
+            <td>Название книги</td>
+            <td th:text="${book.getTitle()}"></td>
+        </tr>
+        <tr>
+            <td>Автор</td>
+            <td th:text="${book.getAuthor()}"></td>
+        </tr>
+        <tr>
+            <td>Издательство</td>
+            <td th:text="${book.getPublishingHouse()}"></td>
+        </tr>
+        <tr>
+            <td>Год издания</td>
+            <td th:text="${book.getPublishingYear()}"></td>
+        </tr>
+        <tr>
+            <td>Количество страниц</td>
+            <td th:text="${book.getPages()}"></td>
+        </tr>
+    </table>
+
+    <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
+      <input type="submit" value="Delete">
+    </form>
+    <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
+        <input type="submit" value="Edit">
+    </form>
+    <br>
+    <hr>
+    <a th:href="@{/books}">Вернуться к списку книг</a>
+    <a th:href="@{/readers}">Перейти к читателям</a>
+    <a th:href="@{/authors}">Перейти к авторам</a>
+    <a th:href="@{/publishing-houses}">Перейти к издательствам</a>
+</body>
+</html>
