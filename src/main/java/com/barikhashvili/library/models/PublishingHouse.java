@@ -1,7 +1,9 @@
 package com.barikhashvili.library.models;
 
 public class PublishingHouse {
+    // Идентификатор издательства по БД
     private int id;
+    // Название издательства
     private String name;
 
     public int getId() {

@@ -1,15 +1,30 @@
 package com.barikhashvili.library.models;
 
 public class Book {
+    // Идентификатор книги
     private int id;
-    private int ISBN;
+    // Уникальный код ISBN книги
+    private String ISBN;
+    // Название книги
     private String title;
-    private int authorID;
-    private String author;
-    private int publishingHouseID;
-    private String publishingHouse;
-    private int publishingYear;
-    private int pages;
+    // Идентификатор автора по БД
+    private int authorId;
+    // Идентификатор издательства по БД
+    private int publishingHouseId;
+    // Год издания книги
+    private Integer publishingYear;
+    // Количество страниц в книге
+    private Integer pages;
+    // Прошедшие дни с момента выдачи книги
+    private Integer elapsedDays;
+
+    public Integer getElapsedDays() {
+        return elapsedDays;
+    }
+
+    public void setElapsedDays(Integer elapsedDays) {
+        this.elapsedDays = elapsedDays;
+    }
 
     public int getId() {
         return id;
@@ -19,11 +34,11 @@ public class Book {
         this.id = id;
     }
 
-    public int getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
-    public void setISBN(int ISBN) {
+    public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 
@@ -35,51 +50,35 @@ public class Book {
         this.title = title;
     }
 
-    public int getAuthorID() {
-        return authorID;
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthorID(int authorID) {
-        this.authorID = authorID;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
-    public int getPublishingHouseID() {
-        return publishingHouseID;
+    public int getPublishingHouseId() {
+        return publishingHouseId;
     }
 
-    public void setPublishingHouseID(int publishingHouseID) {
-        this.publishingHouseID = publishingHouseID;
+    public void setPublishingHouseId(int publishingHouseId) {
+        this.publishingHouseId = publishingHouseId;
     }
 
-    public int getPublishingYear() {
+    public Integer getPublishingYear() {
         return publishingYear;
     }
 
-    public void setPublishingYear(int publishingYear) {
+    public void setPublishingYear(Integer publishingYear) {
         this.publishingYear = publishingYear;
     }
 
-    public int getPages() {
+    public Integer getPages() {
         return pages;
     }
 
-    public void setPages(int pages) {
+    public void setPages(Integer pages) {
         this.pages = pages;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublishingHouse() {
-        return publishingHouse;
-    }
-
-    public void setPublishingHouse(String publishingHouse) {
-        this.publishingHouse = publishingHouse;
     }
 }

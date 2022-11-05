@@ -1,14 +1,42 @@
 package com.barikhashvili.library.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import java.util.Date;
+
 public class Reader {
+    // Идентификатор читателя по БД
     private int id;
+    // Имя читателя
     private String firstName;
+    // Фамилия читателя
     private String lastName;
+    // Отчество читателя
     private String patronymic;
-    private String male;
+    // День рождения читателя
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateOfBirth;
+    // Пол читателя
+    private String gender;
+    // Адрес проживания читателя
     private String residentialAddress;
+    // Электронный адрес читателя
     private String email;
+    // Номер телефона читателя
     private String phone;
+    // Количество взятых в библиотеке книг
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public boolean isEmpty() {
+        return firstName == null;
+    }
 
     public int getId() {
         return id;
@@ -42,12 +70,12 @@ public class Reader {
         this.patronymic = patronymic;
     }
 
-    public String getMale() {
-        return male;
+    public String getGender() {
+        return gender;
     }
 
-    public void setMale(String male) {
-        this.male = male;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getResidentialAddress() {
@@ -72,5 +100,21 @@ public class Reader {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getInfo() {
+        return lastName + " " + firstName.charAt(0) + '.' + patronymic.charAt(0) + '.';
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean isMale() {
+        return gender.equals("Мужчина");
     }
 }

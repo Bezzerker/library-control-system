@@ -1,25 +1,82 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="https://thymeleaf.org">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Издательства</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
 </head>
-<body>
-<h1>Список издательств: </h1>
-<div th:each="house : ${houses}">
-    <a th:href="@{/publishing-houses/{id}(id=${house.getId()})}"
-       th:text="${house.getName()}"></a>
-</div>
-<br>
-<hr>
-<form th:method="GET" th:action="@{/publishing-houses/new}">
-    <input type="submit" value="Добавить издательство">
-</form>
-<br><br>
-<a th:href="@{/books}">Перейти к списку книг</a>
-<a th:href="@{/readers}">Перейти к читателям</a>
-<a th:href="@{/authors}">Перейти к авторам</a>
+<body class="is-article-visible">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main" style="box-sizing: unset">
+            <article id="elements" class="active">
+                <h2 class="major">Список издательских домов</h2>
 
+                <!-- Таблица со списком всех издательств -->
+                <section>
+                    <blockquote th:if="${houses.isEmpty()}">Издатели отсутствуют! Добавьте, чтобы увидеть список</blockquote>
+                    <table th:if="${not houses.isEmpty()}" class="no-borders">
+                        <thead>
+                        <tr>
+                            <td><strong>ID</strong></td>
+                            <td style="width: 100%">Название издательства</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="house : ${houses}">
+                            <td>
+                                <a th:href="@{/publishing-houses/{id}(id=${house.getId()})}"
+                                   th:text="${house.getId()}"></a>
+                            </td>
+                            <td>
+                                <a th:href="@{/publishing-houses/{id}(id=${house.getId()})}"
+                                   th:text="${house.getName()}"></a>
+                            </td>
+                            <td>
+                                <a th:href="@{/publishing-houses/{id}/edit(id=${house.getId()})}" class="button small">Изменить</a>
+                            </td>
+                            <td>
+                                <form th:method="DELETE" th:action="@{/publishing-houses/{id}(id=${house.getId()})}" class="no-margin">
+                                    <input type="submit" value="Удалить" class="small">
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- Кнопка добавления издательства -->
+                    <a th:href="@{/publishing-houses/new}" class="button primary">Добавить издательство</a>
+                    <hr>
+                </section>
+                <!-- Ссылки на другие страницы -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/books}" class="button small"
+                               style="width: -webkit-fill-available">Книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/readers}" class="button small"
+                               style="width: -webkit-fill-available">Читатели</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/authors}" class="button small"
+                               style="width: -webkit-fill-available">Авторы</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/}" class="button small"
+                               style="width: -webkit-fill-available">Главная</a>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </div>
 
+    <!-- BG -->
+    <div id="bg"></div>
 </body>
 </html>
+

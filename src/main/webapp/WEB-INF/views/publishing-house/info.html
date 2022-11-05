@@ -1,37 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Получение информации об издательском доме</title>
+    <title>Данные об авторе</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <noscript><link rel="stylesheet" href="../../assets/css/noscript.css" /></noscript>
 </head>
-<body>
-    <h1>Информация об издательском доме</h1>
-    <table border="2">
-        <tr>
-            <th>Параметр</th>
-            <th>Значение</th>
-        </tr>
-        <tr>
-            <td>Идентификатор в БД</td>
-            <td th:text="${house.getId()}"></td>
-        </tr>
-        <tr>
-            <td>Название издательства</td>
-            <td th:text="${house.getName()}"></td>
-        </tr>
-    </table>
+<body class="is-article-visible">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <article id="elements" class="active">
+                <h1 class="major">Об издателе</h1>
 
-    <form th:method="DELETE" th:action="@{/publishing-houses/{id}(id=${house.getId()})}">
-      <input type="submit" value="Удалить">
-    </form>
-    <form th:method="GET" th:action="@{/publishing-houses/{id}/edit(id=${house.getId()})}">
-        <input type="submit" value="Изменить">
-    </form>
-    <br>
-    <hr>
-    <a th:href="@{/publishing-houses}">Вернуться к списку издательств</a>
-    <a th:href="@{/books}">Перейти к списку книг</a>
-    <a th:href="@{/readers}">Перейти к читателям</a>
-    <a th:href="@{/authors}">Перейти к авторам</a>
+                <!-- Данные об издательстве -->
+                <section>
+                    <h3 class="major">Основные данные</h3>
+                    <form th:object="${house}">
+                        <div class="fields">
+                            <div class="field">
+                                <label for="surname">Название издательства</label>
+                                <input readonly id="surname" type="text" th:field="*{name}">
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                </section>
+                <!-- Список книг под данным издательством -->
+                <section>
+                    <h3 class="major">Написанные книги</h3>
+                    <blockquote th:if="${books.isEmpty()}">Книги для данного издателя не добавлены</blockquote>
+                    <table th:if="${not books.isEmpty()}" class="no-borders">
+                        <thead>
+                        <tr>
+                            <td><strong>ID</strong></td>
+                            <td style="width: 100%">Книга</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="book : ${books}">
+                            <td>
+                                <a th:href="@{/books/{id}(id=${book.getId()})}"
+                                   th:text="${book.getId()}"></a>
+                            </td>
+                            <td>
+                                <a th:href="@{/books/{id}(id=${book.getId()})}"
+                                   th:text="${book.getTitle()}"></a>
+                            </td>
+                            <td>
+                                <a th:href="@{/books/{id}/edit(id=${book.getId()})}" class="button small">Изменить</a>
+                            </td>
+                            <td>
+                                <form th:method="DELETE" th:action="@{/publishing-houses/{publisherId}/book/{bookId}(publisherId=${house.getId()}, bookId=${book.getId()})}" class="no-margin">
+                                    <input type="submit" value="Удалить" class="small">
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                </section>
+                <!-- Ссылки на другие страницы -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/publishing-houses}" class="button small"
+                               style="width: -webkit-fill-available">Издательства</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/authors}" class="button small"
+                               style="width: -webkit-fill-available">Авторы</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/books}" class="button small"
+                               style="width: -webkit-fill-available">Книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/readers}" class="button small"
+                               style="width: -webkit-fill-available">Читатели</a>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </div>
+
+    <!-- BG -->
+    <div id="bg"></div>
 </body>
 </html>

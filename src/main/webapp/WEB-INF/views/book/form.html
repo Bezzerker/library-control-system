@@ -1,65 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Add new Student</title>
+    <title>Новая книга</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
 </head>
-<body>
-    <h1>Добавить новую книгу: </h1>
-    <span th:if="${not authors.isEmpty()} and ${not publishers.isEmpty()}">
-    <form th:method="POST" th:action="@{/books}" th:object="${book}">
-        <!-- ISBN -->
-        <label for="isbn">Код ISBN: </label>
-        <input id="isbn" type="text" th:field="*{ISBN}">
-        <br>
-        <!-- Название книги -->
-        <label for="title">Название книги: </label>
-        <input id="title" type="text" th:field="*{title}">
-        <br>
-        <p>Выберите автора</p>
-        <!-- Выбор автора -->
-        <select th:field="*{authorID}">
-            <option th:each="author : ${authors}"
-                    th:value="${author.getId()}"
-                    th:text="${author.getFirstName()} + ' ' + ${author.getSurname()} + ' ' + ${author.getPatronymic()}"></option>
-        </select>
-        <br>
-        <p>Выберите издательство</p>
-        <!-- Выбор издательства -->
-        <select th:field="*{publishingHouseID}">
-            <option th:each="publisher : ${publishers}" th:value="${publisher.getId()}" th:text="${publisher.getName()}"></option>
-        </select>
-        <br>
-        <!-- Выбор года издания -->
-        <label for="year">Год издания: </label>
-        <input id="year" type="text" th:field="*{publishingYear}">
-        <br>
-        <!-- Выбор количества страниц -->
-        <label for="pages">Количество страниц: </label>
-        <input id="pages" type="text" th:field="*{pages}">
-        <br>
-        <!-- Кнопка добавления книги -->
-        <input type="submit" value="Добавить книгу!">
-    </form></span>
+<body class="is-article-visible">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <article id="elements" class="active">
+                <h2 class="major">Добавление новой книги</h2>
 
-    <span th:if="${authors.isEmpty()}">
-        <p>Книгу невозможно добавить, если в справочнике остутствует автор</p>
-        <p>Первоначально необходимо добавить автора!</p>
-        <a th:href="@{/authors/new}">Добавить автора</a>
-        <br>
-        <hr>
-    </span>
-    <span th:if="${publishers.isEmpty()}">
-        <p>Книгу невозможно добавить, если в справочнике остутствует издательство</p>
-        <p>Добавьте издательский дом!</p>
-        <a th:href="@{/publishing-houses/new}">Добавить автора</a>
-    </span>
+                <!-- Форма добавления книги -->
+                <section>
+                    <span th:if="${not authors.isEmpty()} and ${not publishers.isEmpty()}">
+                        <form th:method="POST" th:action="@{/books}" th:object="${book}">
+                            <div class="fields">
+                                <!-- ISBN -->
+                                <div class="field">
+                                    <label for="isbn">Код ISBN:</label>
+                                    <input required id="isbn" type="number" min="0"
+                                           th:field="*{ISBN}" placeholder="9785907114791">
+                                </div>
+                                <!-- Название книги -->
+                                <div class="field">
+                                    <label for="title">Название книги:</label>
+                                    <input required id="title" type="text"
+                                           th:field="*{title}" placeholder="Java. Библиотека профессионала">
+                                </div>
+                                <!-- Выбор автора -->
+                                <div class="field">
+                                    <label for="authors">Автор Книги:</label>
+                                    <select required id="authors" th:field="${book.authorId}">
+                                        <option th:each="author : ${authors}"
+                                                th:value="${author.getId()}"
+                                                th:text="${author.getInfo()}"></option>
+                                    </select>
+                                </div>
+                                <!-- Выбор издательства -->
+                                <div class="field">
+                                <label for="houses">Издатель:</label>
+                                    <select required id="houses" th:field="${book.publishingHouseId}">
+                                        <option th:each="publisher : ${publishers}"
+                                                th:value="${publisher.getId()}"
+                                                th:text="${publisher.getName()}"></option>
+                                    </select>
+                                </div>
+                                <!-- Выбор года издания -->
+                                <div class="field half">
+                                    <label for="year">Год издания:</label>
+                                    <input required id="year" type="number" min="1970"
+                                           th:field="*{publishingYear}" placeholder="2019">
+                                </div>
+                                <!-- Выбор количества страниц -->
+                                <div class="field half">
+                                    <label for="pages">Количество страниц:</label>
+                                    <input required id="pages" type="number" min="1"
+                                           th:field="*{pages}" placeholder="864">
+                                </div>
+                                <!-- Кнопка добавления книги -->
+                                <div class="field">
+                                    <input type="submit" value="Добавить книгу" class="primary">
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                    </span>
+                </section>
+                <!-- Уведомление об отсутствии в БД авторов или издательств -->
+                <section>
+                    <span th:if="${authors.isEmpty()} and not ${publishers.isEmpty()}">
+                        <blockquote>В справочнике отсутствуют авторы. Добавьте их, чтобы приступить к работе!</blockquote>
+                        <a class="button primary" th:href="@{/authors/new}">Добавить автора</a>
+                        <hr>
+                    </span>
+                    <span th:if="${publishers.isEmpty()} and not ${authors.isEmpty()}">
+                        <blockquote>В справочнике отсутствуют издательства.
+                            Добавьте их, чтобы приступить к работе!</blockquote>
+                        <a class="button primary" th:href="@{/publishing-houses/new}">Добавить издательство</a>
+                        <hr>
+                    </span>
+                    <span th:if="${publishers.isEmpty()} and ${authors.isEmpty()}">
+                        <blockquote>В справочнике отсутствуют авторы и издательства.
+                            Добавьте их, чтобы приступить к работе!</blockquote>
+                        <ul class="actions">
+                            <li style="width: -webkit-fill-available">
+                                <a class="button primary" style="width: -webkit-fill-available"
+                                   th:href="@{/authors/new}">Добавить автора</a>
+                            </li>
+                            <li style="width: -webkit-fill-available">
+                                <a class="button primary" style="width: -webkit-fill-available"
+                                   th:href="@{/publishing-houses/new}">Добавить издательство</a>
+                            </li>
+                        </ul>
+                        <hr>
+                    </span>
+                </section>
+                <!-- Ссылки на другие страницы -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/books}" class="button small"
+                               style="width: -webkit-fill-available">Книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/readers}" class="button small"
+                               style="width: -webkit-fill-available">Читатели</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/authors}" class="button small"
+                               style="width: -webkit-fill-available">Авторы</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/publishing-houses}" class="button small"
+                               style="width: -webkit-fill-available">Издательства</a>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </div>
 
-    <br>
-    <hr>
-    <a th:href="@{/books}">Вернуться к списку книг</a>
-    <a th:href="@{/readers}">Перейти к читателям</a>
-    <a th:href="@{/authors}">Перейти к авторам</a>
-    <a th:href="@{/publishing-houses}">Перейти к издательствам</a>
+    <!-- BG -->
+    <div id="bg"></div>
 </body>
 </html>

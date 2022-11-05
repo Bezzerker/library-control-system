@@ -1,28 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Edit person page</title>
+    <title>Изменение читателя</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <noscript><link rel="stylesheet" href="../../assets/css/noscript.css" /></noscript>
 </head>
-<body>
-    <h1>Editing Person Info: </h1>
-    <form th:method="PATCH" th:action="@{/authors/{id}(id=${author.getId()})}" th:object="${author}">
-        <label for="firstName">First Name: </label>
-        <input type="text" th:field="*{firstName}" id="firstName">
-        <br>
+<body class="is-article-visible">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <article id="elements" class="active">
+                <h3 class="major">Изменение данных о читателе</h3>
 
-        <label for="surname">Last Name: </label>
-        <input type="text" th:field="*{surname}" id="surname">
-        <br>
+                <!-- Форма изменения читателя -->
+                <section>
+                    <form th:method="PATCH" th:action="@{/readers/{id}(id=${reader.getId()})}" th:object="${reader}">
+                        <div class="fields">
+                            <!-- Фамилия -->
+                            <div class="field">
+                                <label for="surname">Фамилия:</label>
+                                <input required id="surname" type="text" th:field="*{lastName}" placeholder="Иванов">
+                            </div>
+                            <!-- Имя -->
+                            <div class="field">
+                                <label for="firstName">Имя:</label>
+                                <input required id="firstName" type="text" th:field="*{firstName}" placeholder="Иван">
+                            </div>
+                            <!-- Отчество -->
+                            <div class="field">
+                                <label for="patronymic">Отчество:</label>
+                                <input required id="patronymic" type="text" th:field="*{patronymic}" placeholder="Иванович">
+                            </div>
+                            <!-- Выбор даты рождения -->
+                            <div class="field half">
+                                <label for="date">Дата рождения:</label>
+                                <input required id="date" type="date"
+                                       th:field="${reader.dateOfBirth}" th:value="${reader.dateOfBirth}">
+                            </div>
+                            <!-- Выбор пола -->
+                            <div class="field half">
+                                <label style="margin-bottom: 8%">Выберите пол:</label>
+                                <ul class="actions" style="margin-bottom: 3%">
+                                    <li>
+                                        <input required type="radio" name="gender" id="man" value="Мужчина" th:field="*{gender}">
+                                        <label for="man">Мужчина</label>
+                                    </li>
+                                    <li>
+                                        <input required type="radio" name="gender" id="woman" value="Женщина" th:field="*{gender}">
+                                        <label for="woman">Женщина</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Адрес проживания -->
+                            <div class="field">
+                                <label for="address">Адрес проживания:</label>
+                                <input required id="address" type="text" th:field="*{residentialAddress}" placeholder="г.Москва, ул. Пушкина, дом Колотушкина">
+                            </div>
+                            <!-- Номер телефона -->
+                            <div class="field half">
+                                <label for="phone">Номер телефона:</label>
+                                <input required type="tel" id="phone" placeholder="+7 (900) 123-45-67"
+                                       pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+                                       th:field="*{phone}">
+                            </div>
+                            <!-- Электронная почта -->
+                            <div class="field half">
+                                <label for="email">Email:</label>
+                                <input required id="email" type="email" th:field="*{email}" placeholder="bezzerker@github.com">
+                            </div>
+                            <!-- Кнопка добавления читателя -->
+                            <div class="field half" style="margin-top: auto">
+                                <input type="submit" value="Внести изменения" class="primary" style="width: 100%">
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                </section>
+                <!-- Ссылки на другие страницы -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/readers}" class="button small"
+                               style="width: -webkit-fill-available">Читатели</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/books}" class="button small"
+                               style="width: -webkit-fill-available">Книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/authors}" class="button small"
+                               style="width: -webkit-fill-available">Авторы</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/publishing-houses}" class="button small"
+                               style="width: -webkit-fill-available">Издательства</a>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </div>
 
-        <label for="patronymic">City: </label>
-        <input type="text" th:field="*{patronymic}" id="patronymic">
-        <br>
-
-        <input type="submit" value="Изменить!">
-    </form>
-    <br>
-    <hr>
-    <a th:href="@{/authors}">Вернуться к списку авторов</a>
+    <!-- BG -->
+    <div id="bg"></div>
 </body>
 </html>
+

@@ -1,25 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Add new Student</title>
+    <title>Новый автор</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
 </head>
-<body>
-    <h1>Create new Person from: </h1>
-    <form th:method="POST" th:action="@{/authors}" th:object="${author}">
-        <label for="firstName">Имя: </label>
-        <input id="firstName" type="text" th:field="*{firstName}">
-        <br>
-        <label for="surname">Фамилия: </label>
-        <input id="surname" type="text" th:field="*{surname}">
-        <br>
-        <label for="patronymic">Отчество: </label>
-        <input id="patronymic" type="text" th:field="*{patronymic}">
-        <br>
-        <input type="submit" value="Добавить автора!">
-    </form>
-    <br>
-    <hr>
-    <a th:href="@{/authors}">Return to people list</a>
+<body class="is-article-visible">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <article id="elements" class="active">
+                <h2 class="major">Добавление нового автора</h2>
+
+                <!-- Форма добавления нового автора -->
+                <section>
+                    <form th:method="POST" th:action="@{/authors}" th:object="${author}">
+                        <div class="fields">
+                            <div class="field">
+                                <label for="surname">Фамилия:</label>
+                                <input required id="surname" type="text" th:field="*{surname}" placeholder="Иванов">
+                            </div>
+                            <div class="field">
+                                <label for="firstName">Имя:</label>
+                                <input required id="firstName" type="text" th:field="*{firstName}" placeholder="Иван">
+                            </div>
+                            <div class="field">
+                                <label for="patronymic">Отчество:</label>
+                                <input required id="patronymic" type="text" th:field="*{patronymic}" placeholder="Иванович">
+                            </div>
+                            <div class="field half">
+                                <label for="date">Дата рождения:</label>
+                                <input required id="date" type="date"
+                                       th:field="*{dateOfBirth}" th:value="*{dateOfBirth}">
+                            </div>
+                            <div class="field half" style="margin-top: auto">
+                                <input type="submit" value="Добавить автора" class="primary" style="width: 100%">
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                </section>
+                <!-- Ссылки на другие страницы -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/authors}" class="button small"
+                               style="width: -webkit-fill-available">Авторы</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/publishing-houses}" class="button small"
+                               style="width: -webkit-fill-available">Издательства</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/books}" class="button small"
+                               style="width: -webkit-fill-available">Книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/readers}" class="button small"
+                               style="width: -webkit-fill-available">Читатели</a>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </div>
+
+    <!-- BG -->
+    <div id="bg"></div>
 </body>
 </html>
+

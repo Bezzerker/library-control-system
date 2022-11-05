@@ -1,42 +1,213 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Student Info</title>
+    <title>Данные о читателе</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <noscript><link rel="stylesheet" href="../../assets/css/noscript.css" /></noscript>
 </head>
-<body>
-    <h1>Person info:</h1>
-    <table border="2">
-        <tr>
-            <th>Parameter</th>
-            <th>Value</th>
-        </tr>
-        <tr>
-            <td>Идентификатор БД</td>
-            <td th:text="${author.getId()}"></td>
-        </tr>
-        <tr>
-            <td>Имя</td>
-            <td th:text="${author.getFirstName()}"></td>
-        </tr>
-        <tr>
-            <td>Фамилия</td>
-            <td th:text="${author.getSurname()}"></td>
-        </tr>
-        <tr>
-            <td>Отчество</td>
-            <td th:text="${author.getPatronymic()}"></td>
-        </tr>
-    </table>
+<body class="is-article-visible">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <article id="elements" class="active">
+                <h1 class="major">О читателе</h1>
 
-    <form th:method="DELETE" th:action="@{/authors/{id}(id=${author.getId()})}">
-      <input type="submit" value="Delete">
-    </form>
-    <form th:method="GET" th:action="@{/authors/{id}/edit(id=${author.getId()})}">
-        <input type="submit" value="Edit">
-    </form>
-    <br>
-    <hr>
-    <a th:href="@{/authors}">Return to people list</a>
+                <!-- Данные об читателе -->
+                <section>
+                    <h3 class="major">Основные данные</h3>
+                    <form th:object="${reader}">
+                        <div class="fields">
+                            <!-- Фамилия -->
+                            <div class="field">
+                                <label for="surname">Фамилия:</label>
+                                <input readonly id="surname" type="text" th:field="*{lastName}">
+                            </div>
+                            <!-- Имя -->
+                            <div class="field">
+                                <label for="firstName">Имя:</label>
+                                <input readonly id="firstName" type="text" th:field="*{firstName}">
+                            </div>
+                            <!-- Отчество -->
+                            <div class="field">
+                                <label for="patronymic">Отчество:</label>
+                                <input required id="patronymic" type="text" th:field="*{patronymic}">
+                            </div>
+                            <!-- Выбор даты рождения -->
+                            <div class="field half">
+                                <label for="date">Дата рождения:</label>
+                                <input readonly id="date" type="date"
+                                       th:field="${reader.dateOfBirth}" th:value="${reader.dateOfBirth}">
+                            </div>
+                            <!-- Выбор пола -->
+                            <div class="field half">
+                                <label style="margin-bottom: 8%">Пол:</label>
+                                <span th:if="${reader.isMale()}">
+                                    <ul class="actions" style="margin-bottom: 3%">
+                                        <li>
+                                            <input type="radio" name="gender" id="man" value="Мужчина" th:field="*{gender}">
+                                            <label for="man">Мужчина</label>
+                                        </li>
+                                        <li class="actions" style="margin-bottom: 3%">
+                                            <input disabled readonly type="radio" name="gender" id="woman" value="Женщина" th:field="*{gender}">
+                                            <label for="woman">Женщина</label>
+                                        </li>
+                                    </ul>
+                                </span>
+                                <span th:if="${not reader.isMale()}">
+                                    <ul class="actions" style="margin-bottom: 3%">
+                                        <li>
+                                            <input type="radio" name="gender" id="man" value="Мужчина" th:field="*{gender}">
+                                            <label aria-disabled="" for="man">Мужчина</label>
+                                        </li>
+                                        <li>
+                                            <input readonly type="radio" name="gender" id="woman" value="Женщина" th:field="*{gender}">
+                                            <label for="woman">Женщина</label>
+                                        </li>
+                                    </ul>
+                                </span>
+                            </div>
+                            <!-- Адрес проживания -->
+                            <div class="field">
+                                <label for="address">Адрес проживания:</label>
+                                <input readonly id="address" type="text" th:field="*{residentialAddress}">
+                            </div>
+                            <!-- Номер телефона -->
+                            <div class="field half">
+                                <label for="phone">Номер телефона:</label>
+                                <input readonly type="tel" id="phone" th:field="*{phone}">
+                            </div>
+                            <!-- Электронная почта -->
+                            <div class="field half">
+                                <label for="email">Email:</label>
+                                <input readonly id="email" type="email" th:field="*{email}">
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                </section>
+                <!-- Список книг, написанных данным автором -->
+                <section>
+                    <h3 class="major">Выданные книги для читателя</h3>
+                    <!-- Если читатель не брал из библиотеки книги -->
+                    <span th:if="${books.isEmpty()}">
+                        <!-- Если в библиотеке есть свободные книги -->
+                        <span th:if="${not freeBooks.isEmpty()}">
+                            <blockquote>Данный читатель не забирал книги из библиотеки. Вы можете выдать ему книгу!</blockquote>
+                            <form th:method="POST" th:action="@{/readers/{readerId}/give(readerId=${reader.getId()})}" th:object="${book}">
+                                <div class="fields">
+                                    <!-- Книга -->
+                                    <div class="field">
+                                        <label for="authors">Выберите книгу:</label>
+                                        <select required id="authors" th:field="${book.id}">
+                                            <option th:each="book : ${freeBooks}"
+                                                    th:value="${book.getId()}"
+                                                    th:text="${book.getTitle()}"></option>
+                                        </select>
+                                    </div>
+                                    <!-- Кнопка выдачи книги -->
+                                    <div class="field">
+                                        <input type="submit" value="Выдать книгу" class="primary">
+                                    </div>
+                                </div>
+                            </form>
+                        </span>
+                        <!-- Если в библиотеке нет свободных книг -->
+                        <span th:if="${freeBooks.isEmpty()}">
+                            <blockquote>Выдача невозможна: в данный момент в библиотеке нет свободных книг, либо они не были добавлены.</blockquote>
+                        </span>
+                    </span>
+                    <!-- Если у читателя имеются книги на руках -->
+                    <span th:if="${not books.isEmpty()}">
+                        <table class="no-borders">
+                            <thead>
+                                <tr>
+                                    <td><strong>ID</strong></td>
+                                    <td style="width: 100%">Книга</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="book : ${books}">
+                                    <td>
+                                        <a th:href="@{/books/{id}(id=${book.getId()})}"
+                                           th:text="${book.getId()}"></a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/books/{id}(id=${book.getId()})}"
+                                           th:text="${book.getTitle()}"></a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/books/{id}/edit(id=${book.getId()})}" class="button small">Изменить</a>
+                                    </td>
+                                    <td>
+                                        <form th:method="DELETE" th:action="@{/readers/{readerId}/return/{bookId}(readerId=${reader.getId()}, bookId=${book.getId()})}" class="no-margin">
+                                            <input type="submit" value="Вернуть" class="small">
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <form th:method="DELETE" th:action="@{/readers/{readerId}/returnAll(readerId=${reader.getId()})}" class="no-margin">
+                            <div class="fields">
+                                <div class="field">
+                                    <input type="submit" value="Вернуть все книги" >
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Если в библиотеке есть свободные книги -->
+                        <span th:if="${not freeBooks.isEmpty()}">
+                            <hr>
+                            <h3 class="major">Выдать книгу</h3>
+                            <form th:method="POST" th:action="@{/readers/{readerId}/give(readerId=${reader.getId()})}" th:object="${book}">
+                                <div class="fields">
+                                    <!-- Книга -->
+                                    <div class="field">
+                                        <label for="authors">Выберите книгу:</label>
+                                        <select required id="authors" th:field="${book.id}">
+                                            <option th:each="book : ${freeBooks}"
+                                                    th:value="${book.getId()}"
+                                                    th:text="${book.getTitle()}"></option>
+                                        </select>
+                                    </div>
+                                    <!-- Кнопка выдачи книги -->
+                                    <div class="field">
+                                        <input type="submit" value="Выдать книгу" class="primary">
+                                    </div>
+                                </div>
+                            </form>
+                        </span>
+                    </span>
+                    <hr>
+                </section>
+                <!-- Ссылки на другие страницы -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/readers}" class="button small"
+                               style="width: -webkit-fill-available">Читатели</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/books}" class="button small"
+                               style="width: -webkit-fill-available">Книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/authors}" class="button small"
+                                style="width: -webkit-fill-available">Авторы</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/publishing-houses}" class="button small"
+                                style="width: -webkit-fill-available">Издательства</a>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </div>
+
+    <!-- BG -->
+    <div id="bg"></div>
 </body>
 </html>

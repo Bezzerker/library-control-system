@@ -1,53 +1,187 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Детали книги</title>
+    <title>Данные о книге</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <noscript><link rel="stylesheet" href="../../assets/css/noscript.css" /></noscript>
 </head>
-<body>
-    <h1>Информация о книге:</h1>
-    <table border="2">
-        <tr>
-            <th>Параметр</th>
-            <th>Значение</th>
-        </tr>
-        <tr>
-            <td>ISBN</td>
-            <td th:text="${book.getISBN()}"></td>
-        </tr>
-        <tr>
-            <td>Название книги</td>
-            <td th:text="${book.getTitle()}"></td>
-        </tr>
-        <tr>
-            <td>Автор</td>
-            <td th:text="${book.getAuthor()}"></td>
-        </tr>
-        <tr>
-            <td>Издательство</td>
-            <td th:text="${book.getPublishingHouse()}"></td>
-        </tr>
-        <tr>
-            <td>Год издания</td>
-            <td th:text="${book.getPublishingYear()}"></td>
-        </tr>
-        <tr>
-            <td>Количество страниц</td>
-            <td th:text="${book.getPages()}"></td>
-        </tr>
-    </table>
+<body class="is-article-visible">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <article id="elements" class="active">
+                <h1 class="major">О книге</h1>
 
-    <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
-      <input type="submit" value="Delete">
-    </form>
-    <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
-        <input type="submit" value="Edit">
-    </form>
-    <br>
-    <hr>
-    <a th:href="@{/books}">Вернуться к списку книг</a>
-    <a th:href="@{/readers}">Перейти к читателям</a>
-    <a th:href="@{/authors}">Перейти к авторам</a>
-    <a th:href="@{/publishing-houses}">Перейти к издательствам</a>
+                <!-- Данные о книге -->
+                <section>
+                    <h3 class="major">Основные данные</h3>
+                    <form th:object="${book}">
+                        <div class="fields">
+                            <!-- ISBN -->
+                            <div class="field">
+                                <label for="isbn">Код ISBN:</label>
+                                <input readonly id="isbn" type="text"
+                                       th:field="*{ISBN}">
+                            </div>
+                            <!-- Название книги -->
+                            <div class="field">
+                                <label for="title">Название книги:</label>
+                                <input readonly id="title" type="text"
+                                       th:field="*{title}">
+                            </div>
+                            <!-- Автор -->
+                            <div class="field">
+                                <label for="title">Автор книги:</label>
+                                <input readonly id="title" type="text"
+                                       th:value="${author.getInfo()}">
+                            </div>
+                            <!-- Название издательства -->
+                            <div class="field">
+                                <label for="title">Издательство:</label>
+                                <input readonly id="title" type="text"
+                                       th:value="${house.getName()}">
+                            </div>
+                            <!-- Год издания -->
+                            <div class="field half">
+                                <label for="year">Год издания:</label>
+                                <input readonly id="year" type="text"
+                                       th:field="*{publishingYear}">
+                            </div>
+                            <!-- Количество страниц -->
+                            <div class="field half">
+                                <label for="pages">Количество страниц:</label>
+                                <input readonly id="pages" type="text"
+                                       th:field="*{pages}">
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <!-- Кнопки перехода к автору книги и к издательству данной книги -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a class="button primary" style="width: -webkit-fill-available"
+                               th:href="@{/authors/{id}(id=${author.getId()})}">К автору книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a class="button primary" style="width: -webkit-fill-available"
+                               th:href="@{/publishing-houses/{id}(id=${house.getId()})}">К издательству книги</a>
+                        </li>
+                    </ul>
+                    <hr>
+                </section>
+                <!-- Список книг, написанных данным автором -->
+                <section>
+                    <span th:if="${reader.isEmpty()}">
+                        <h3 class="major">Выдача книги читателю</h3>
+                        <!-- Если есть список читателей -->
+                        <span th:if="${not readers.isEmpty()}">
+                            <form th:method="POST" th:action="@{/books/give/{id}(id=${book.getId()})}" th:object="${reader}">
+                                <div class="fields">
+                                    <!-- Выбор автора -->
+                                    <div class="field">
+                                        <label for="readers">Выберите читателя:</label>
+                                        <select required id="readers" th:field="${reader.id}">
+                                            <option th:each="person : ${readers}"
+                                                    th:value="${person.getId()}"
+                                                    th:text="${person.getInfo()}"></option>
+                                        </select>
+                                    </div>
+                                    <!-- Кнопка отправки -->
+                                    <div class="field">
+                                        <input type="submit" value="Выдать читателю книгу" class="primary">
+                                    </div>
+                                </div>
+                            </form>
+                        </span>
+                        <!-- Если нет списка читателей -->
+                        <span th:if="${readers.isEmpty()}">
+                            <blockquote>В справочнике не имеется читателей. Добавьте читателя, чтобы произвести выдачу книги!</blockquote>
+                            <a class="button primary" style="width: -webkit-fill-available"
+                               th:href="@{/readers/new}">Добавить читателя</a>
+                        </span>
+                    </span>
+                    <!-- Возврат книги в библиотеку -->
+                    <span th:if="${not reader.isEmpty()}">
+                        <h3 class="major">Возвращение книги в библиотеку</h3>
+                        <blockquote>В данный момент книга находится у читателя. Вы можете вернуть книгу в библиотеку или перейти на страницу читателя</blockquote>
+                        <h4 class="major">Книгу забрал:</h4>
+                        <form th:method="DELETE" th:action="@{/books/return/{id}(id=${book.getId()})}">
+                            <div class="fields">
+                                <!-- Фамилия читателя книги -->
+                                <div class="field half">
+                                    <label for="surname">Фамилия</label>
+                                    <input readonly id="surname" type="text"
+                                        th:value="${reader.getLastName()}">
+                                </div>
+                                <!-- Имя читателя книги -->
+                                <div class="field half">
+                                    <label for="name">Имя</label>
+                                    <input readonly id="name" type="text"
+                                           th:value="${reader.getFirstName()}">
+                                </div>
+                                <!-- Отчество читателя книги -->
+                                <div class="field half">
+                                    <label for="surname">Отчество</label>
+                                    <input readonly id="surname" type="text"
+                                           th:value="${reader.getPatronymic()}">
+                                </div>
+                                <!-- Количество дней с момента взятия книги -->
+                                <div class="field half">
+                                    <label for="surname">Прошло дней с выдачи</label>
+                                    <input readonly id="surname" type="text"
+                                           th:value="${book.getElapsedDays()}">
+                                </div>
+
+                                <!-- Кнопки возвращения книги и перехода к автору книги -->
+                                <div class="field">
+                                    <ul class="actions">
+                                        <li style="width: -webkit-fill-available">
+                                            <div class="field">
+                                                <input type="submit" value="Вернуть книгу"
+                                                       class="primary" style="width: -webkit-fill-available">
+                                            </div>
+                                        </li>
+                                        <li style="width: -webkit-fill-available">
+                                            <a class="button primary" style="width: -webkit-fill-available"
+                                               th:href="@{/readers/{id}(id=${reader.getId()})}">К читателю книги</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </span>
+                    <hr>
+                </section>
+                <!-- Ссылки на другие страницы -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/books}" class="button small"
+                               style="width: -webkit-fill-available">Книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/readers}" class="button small"
+                               style="width: -webkit-fill-available">Читатели</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/authors}" class="button small"
+                               style="width: -webkit-fill-available">Авторы</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/publishing-houses}" class="button small"
+                               style="width: -webkit-fill-available">Издательства</a>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </div>
+
+    <!-- BG -->
+    <div id="bg"></div>
 </body>
 </html>

@@ -1,23 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Изменение издательства</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <noscript><link rel="stylesheet" href="../../assets/css/noscript.css" /></noscript>
 </head>
-<body>
-    <h1>Изменение данных об издательстве: </h1>
-    <form th:method="PATCH" th:action="@{/publishing-houses/{id}(id=${house.getId()})}" th:object="${house}">
-        <label for="publishing-house">Название издательства: </label>
-        <input type="text" th:field="*{name}" id="publishing-house">
-        <br>
+<body class="is-article-visible">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <article id="elements" class="active">
+                <h3 class="major">Изменение данных издательства</h3>
 
-        <input type="submit" value="Изменить!">
-    </form>
-    <br>
-    <hr>
-    <a th:href="@{/publishing-houses}">Вернуться к списку издательств</a>
-    <a th:href="@{/books}">Перейти к списку книг</a>
-    <a th:href="@{/readers}">Перейти к читателям</a>
-    <a th:href="@{/authors}">Перейти к авторам</a>
+                <!-- Форма изменения данных -->
+                <section>
+                    <form th:method="PATCH" th:action="@{/publishing-houses/{id}(id=${house.getId()})}" th:object="${house}">
+                        <div class="fields">
+                            <div class="field">
+                                <label for="publishing-house">Введите новое название издательства:</label>
+                                <input required type="text" th:field="*{name}" placeholder="ДМК Пресс" id="publishing-house">
+                            </div>
+                            <div class="field half">
+                                <input type="submit" value="Изменить" class="primary">
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                </section>
+                <!-- Ссылки на другие страницы -->
+                <section>
+                    <ul class="actions">
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/publishing-houses}" class="button small"
+                               style="width: -webkit-fill-available">Издательства</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/books}" class="button small"
+                               style="width: -webkit-fill-available">Книги</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/readers}" class="button small"
+                               style="width: -webkit-fill-available">Читатели</a>
+                        </li>
+                        <li style="width: -webkit-fill-available">
+                            <a th:href="@{/authors}" class="button small"
+                               style="width: -webkit-fill-available">Авторы</a>
+                        </li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </div>
+
+    <!-- BG -->
+    <div id="bg"></div>
 </body>
 </html>
+

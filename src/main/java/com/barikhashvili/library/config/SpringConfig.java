@@ -9,9 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -57,6 +55,19 @@ public class SpringConfig implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         resolver.setCharacterEncoding("UTF-8");
         registry.viewResolver(resolver);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
+        registry.addResourceHandler("assets/webfonts/**").addResourceLocations("classpath:/static/assets/webfonts/");
+        registry.addResourceHandler("assets/css/**").addResourceLocations("classpath:/static/assets/css/");
+        registry.addResourceHandler("assets/js/**").addResourceLocations("classpath:/static/assets/js/");
+        registry.addResourceHandler("assets/saas/**").addResourceLocations("classpath:/static/assets/saas/");
+        registry.addResourceHandler("assets/saas/base/**").addResourceLocations("classpath:/static/assets/saas/base");
+        registry.addResourceHandler("assets/saas/components/**").addResourceLocations("classpath:/static/assets/saas/components");
+        registry.addResourceHandler("assets/saas/layout/**").addResourceLocations("classpath:/static/assets/saas/layout");
+        registry.addResourceHandler("assets/saas/libs/**").addResourceLocations("classpath:/static/assets/saas/libs");
     }
 
     @Bean
